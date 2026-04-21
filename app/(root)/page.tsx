@@ -10,6 +10,7 @@ const HomePage = () => {
     <div className="flex flex-col m-5 space-y-5">
       <Button label="Νέα Καταχώρηση" link="/errorForm" />
       <Button label="Ιστορικό" link="/history" />
+      <Button label="Charts" link="/charts" />
     </div>
   );
 };
