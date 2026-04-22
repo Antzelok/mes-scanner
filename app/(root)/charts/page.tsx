@@ -34,7 +34,7 @@ const ChartsPage = () => {
   }));
 
   return (
-    <div className="container">
+    <div className="m-3">
       {isLoading ? (
         <Loader />
       ) : isError ? (
