@@ -3,7 +3,6 @@
 import { useEffect } from "react";
 import { useGeolocated } from "react-geolocated";
 import toast from "react-hot-toast";
-import Spinner from "@/components/shared/spinner";
 import QRScanner from "@/components/errorForm/qrscanner";
 import { FiMapPin } from "react-icons/fi";
 import { useErrorRecordMutation } from "@/app/redux/api";
@@ -13,6 +12,7 @@ import { errorFormSchema } from "@/lib/validators";
 import { defaultFormValues } from "@/lib/constants";
 import { ErrorFormType } from "@/types";
 import BackButton from "@/components/shared/back-button";
+import Loader from "@/components/shared/loader";
 
 const typeOptions: string[] = [
   "Boot Loop",
@@ -128,7 +128,7 @@ const ErrorForm = () => {
             onClick={handleLocationClick}
             className="w-30 h-30 flex items-center justify-center"
           >
-            {!coords ? <Spinner /> : <FiMapPin size={40} />}
+            {!coords ? <Loader /> : <FiMapPin size={40} />}
           </button>
         </div>
 

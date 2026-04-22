@@ -1,6 +1,6 @@
 "use client";
 import { useGetErrorsHistoryQuery } from "@/app/redux/api";
-import Spinner from "@/components/shared/spinner";
+import Loader from "@/components/shared/loader";
 import { ErrorForm } from "@/types";
 import {
   BarChart,
@@ -36,7 +36,7 @@ const ChartsPage = () => {
   return (
     <div className="container">
       {isLoading ? (
-        <Spinner />
+        <Loader />
       ) : isError ? (
         <div className="flex h-screen items-center justify-center text-red-500">
           Error loading data

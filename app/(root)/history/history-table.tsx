@@ -2,10 +2,10 @@
 
 import { useGetErrorsHistoryQuery } from "@/app/redux/api";
 import { ErrorForm } from "@/types";
-import Spinner from "@/components/shared/spinner";
 import BackButton from "@/components/shared/back-button";
 import Search from "@/components/history/search";
 import { useState } from "react";
+import Loader from "@/components/shared/loader";
 
 const HistoryTable = () => {
   const [searchTerm, setSearchTerm] = useState("");
@@ -15,7 +15,7 @@ const HistoryTable = () => {
   if (isLoading) {
     return (
       <div className="flex flex-col justify-center items-center p-20">
-        <Spinner />
+        <Loader />
         <span className="ml-2 mt-4 text-gray-500 animate-pulse">
           Φόρτωση δεδομένων...
         </span>
