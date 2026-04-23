@@ -9,23 +9,25 @@ export const metadata: Metadata = {
 
 const HomePage = () => {
   return (
-    <main className="min-h-screen bg-[#f8fafc] py-12 px-6">
-      <div className="max-w-xl mx-auto">
-        
+    <main className=" bg-[#f8fafc] py-12 px-6 flex items-center justify-center h-screen">
+      <div className="w-200">
         {/* Header */}
         <header className="mb-10">
-          <h1 className="text-3xl font-bold text-slate-900 tracking-tight">Console</h1>
-          <p className="text-slate-500 font-medium">Manage and monitor system entries</p>
+          <h1 className="text-3xl font-bold text-slate-900 tracking-tight">
+            Console
+          </h1>
+          <p className="text-slate-500 font-medium">
+            Manage and monitor system entries
+          </p>
         </header>
 
         {/* Bento Grid Layout */}
         <div className="grid grid-cols-2 gap-4">
-          
           {/* Main Large Box (Full Width) */}
           <div className="col-span-2">
-            <Button 
-              label="Νέα Καταχώρηση" 
-              link="/errorForm" 
+            <Button
+              label="Νέα Καταχώρηση"
+              link="/errorForm"
               className="group relative overflow-hidden w-full h-40 bg-[#3b82f6] rounded-4xl flex flex-col items-center justify-center gap-3 transition-all hover:shadow-2xl hover:shadow-blue-200 active:scale-[0.98]"
               icon={
                 <div className="p-3 bg-white/10 rounded-2xl group-hover:scale-110 transition-transform">
@@ -39,13 +41,16 @@ const HomePage = () => {
 
           {/* Square Box 1: History */}
           <div className="col-span-1">
-            <Button 
-              label="Ιστορικό" 
-              link="/history" 
+            <Button
+              label="Ιστορικό"
+              link="/history"
               className="w-full h-48 bg-white border border-slate-200 rounded-4xl flex flex-col items-center justify-center gap-4 transition-all hover:border-[#3b82f6] hover:shadow-xl hover:shadow-slate-200 group active:scale-[0.97]"
               icon={
                 <div className="p-4 bg-slate-50 rounded-2xl group-hover:bg-blue-50 transition-colors">
-                  <MdHistory size={32} className="text-slate-600 group-hover:text-[#3b82f6]" />
+                  <MdHistory
+                    size={32}
+                    className="text-slate-600 group-hover:text-[#3b82f6]"
+                  />
                 </div>
               }
               labelClassName="text-slate-700 font-semibold"
@@ -54,19 +59,21 @@ const HomePage = () => {
 
           {/* Square Box 2: Charts */}
           <div className="col-span-1">
-            <Button 
-              label="Charts" 
-              link="/charts" 
+            <Button
+              label="Charts"
+              link="/charts"
               className="w-full h-48 bg-white border border-slate-200 rounded-4xl flex flex-col items-center justify-center gap-4 transition-all hover:border-[#3b82f6] hover:shadow-xl hover:shadow-slate-200 group active:scale-[0.97]"
               icon={
                 <div className="p-4 bg-slate-50 rounded-2xl group-hover:bg-blue-50 transition-colors">
-                  <IoStatsChartOutline size={30} className="text-slate-600 group-hover:text-[#3b82f6]" />
+                  <IoStatsChartOutline
+                    size={30}
+                    className="text-slate-600 group-hover:text-[#3b82f6]"
+                  />
                 </div>
               }
               labelClassName="text-slate-700 font-semibold"
             />
           </div>
-
         </div>
 
         {/* Quick Footer Info */}
@@ -77,7 +84,6 @@ const HomePage = () => {
             CONNECTED
           </div>
         </div>
-
       </div>
     </main>
   );
