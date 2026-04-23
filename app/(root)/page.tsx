@@ -1,7 +1,9 @@
 import { Metadata } from "next";
 import Button from "@/components/errorForm/button";
-import { IoAddCircleOutline, IoStatsChartOutline } from "react-icons/io5";
+import { GiField } from "react-icons/gi";
+import { FaGitlab } from "react-icons/fa";
 import { MdHistory } from "react-icons/md";
+import { IoStatsChartOutline } from "react-icons/io5";
 
 export const metadata: Metadata = {
   title: "Αρχική",
@@ -31,21 +33,21 @@ const HomePage = () => {
               className="group relative overflow-hidden w-full h-40 bg-[#3b82f6] rounded-4xl flex flex-col items-center justify-center gap-3 transition-all hover:shadow-2xl hover:shadow-blue-200 active:scale-[0.98]"
               icon={
                 <div className="p-3 bg-white/10 rounded-2xl group-hover:scale-110 transition-transform">
-                  <IoAddCircleOutline size={40} className="text-white" />
+                  <GiField size={40} className="text-white" />
                 </div>
               }
               // Adjusting the label style via a custom class if your Button component supports it
               labelClassName="text-white text-xl font-bold"
             />
           </div>
-           <div className="col-span-2">
+          <div className="col-span-2">
             <Button
               label="Καταχώρηση Εργαστηρίου"
               link="/errorForm"
               className="group relative overflow-hidden w-full h-40 bg-[#3b82f6] rounded-4xl flex flex-col items-center justify-center gap-3 transition-all hover:shadow-2xl hover:shadow-blue-200 active:scale-[0.98]"
               icon={
                 <div className="p-3 bg-white/10 rounded-2xl group-hover:scale-110 transition-transform">
-                  <IoAddCircleOutline size={40} className="text-white" />
+                  <FaGitlab size={40} className="text-white" />
                 </div>
               }
               // Adjusting the label style via a custom class if your Button component supports it
