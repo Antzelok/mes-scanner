@@ -26,7 +26,21 @@ const HomePage = () => {
           {/* Main Large Box (Full Width) */}
           <div className="col-span-2">
             <Button
-              label="Νέα Καταχώρηση"
+              label="Καταχώρηση Πεδίου"
+              link="/errorForm"
+              className="group relative overflow-hidden w-full h-40 bg-[#3b82f6] rounded-4xl flex flex-col items-center justify-center gap-3 transition-all hover:shadow-2xl hover:shadow-blue-200 active:scale-[0.98]"
+              icon={
+                <div className="p-3 bg-white/10 rounded-2xl group-hover:scale-110 transition-transform">
+                  <IoAddCircleOutline size={40} className="text-white" />
+                </div>
+              }
+              // Adjusting the label style via a custom class if your Button component supports it
+              labelClassName="text-white text-xl font-bold"
+            />
+          </div>
+           <div className="col-span-2">
+            <Button
+              label="Καταχώρηση Εργαστηρίου"
               link="/errorForm"
               className="group relative overflow-hidden w-full h-40 bg-[#3b82f6] rounded-4xl flex flex-col items-center justify-center gap-3 transition-all hover:shadow-2xl hover:shadow-blue-200 active:scale-[0.98]"
               icon={
