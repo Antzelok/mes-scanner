@@ -140,6 +140,7 @@ const HistoryTable = () => {
             <tr>
               <th className="px-4 py-3">ΗΜ/ΝΙΑ</th>
               <th className="px-4 py-3">ΣΥΣΚΕΥΗ (S/N & DevEUI)</th>
+              <th className="px-4 py-3">ΑΡΙΘΜΟΣ ΥΔ/ΨΙΑΣ</th>
               <th className="px-4 py-3">ΤΟΠΟΘΕΣΙΑ</th>
               <th className="px-4 py-3">ΒΛΑΒΗ</th>
               <th className="px-4 py-3">ΕΝΕΡΓΕΙΕΣ</th>
@@ -176,6 +177,9 @@ const HistoryTable = () => {
                     </div>
                     <div className="text-xs text-gray-400 font-mono">
                       {record.deveui}
+                    </div>
+                     <div className="text-xs text-gray-400 font-mono">
+                      {record.boxNumber}
                     </div>
                   </td>
                   <td className="px-4 py-3 font-mono text-blue-600 text-xs">

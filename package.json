@@ -2,6 +2,7 @@
   "name": "mes-digital",
   "version": "0.1.0",
   "private": true,
+  "type": "module",
   "scripts": {
     "dev": "next dev",
     "build": "next build",
@@ -9,9 +10,12 @@
     "lint": "eslint",
     "postinstall": "prisma generate"
   },
+  "prisma": {
+    "seed": "ts-node db/sample-data.ts"
+  },
   "dependencies": {
     "@hookform/resolvers": "^5.2.2",
-    "@prisma/client": "^6.19.0",
+    "@prisma/client": "6.19.3",
     "@reduxjs/toolkit": "^2.10.1",
     "@yudiel/react-qr-scanner": "^2.4.1",
     "bcrypt-ts-edge": "^3.0.1",
@@ -38,7 +42,7 @@
     "baseline-browser-mapping": "^2.9.19",
     "eslint": "^9",
     "eslint-config-next": "16.0.3",
-    "prisma": "^6.19.0",
+    "prisma": "6.19.3",
     "tailwindcss": "^4",
     "tsx": "^4.20.6",
     "typescript": "^5.9.3"

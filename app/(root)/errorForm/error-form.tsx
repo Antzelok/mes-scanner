@@ -170,6 +170,18 @@ const ErrorForm = () => {
           </div>
         </div>
 
+        <div>
+          <label className="font-semibold">Αριθμός Υδροληψίας:</label>
+          <input
+            type="text"
+            {...register("boxNumber")}
+            className="border rounded-xl p-1 w-full"
+          />
+          {errors.boxNumber && (
+            <p className="text-red-600">{errors.boxNumber.message}</p>
+          )}
+        </div>
+
         {/* Types */}
         <div>
           <label className="font-semibold">Είδος Βλάβης:</label>

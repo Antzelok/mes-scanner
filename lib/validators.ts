@@ -6,6 +6,7 @@ export const errorFormSchema = z.object({
   longitude: z.number().min(1, "Το πεδίο είναι υποχρεωτικό"),
   serialNumber: z.string().min(1, "Το πεδίο είναι υποχρεωτικό"),
   deveui: z.string().min(1, "Το πεδίο είναι υποχρεωτικό"),
+  boxNumber: z.string().min(1, "Το πεδίο είναι υποχρεωτικό"),
   types: z.array(z.string()).optional(),
   actions: z.array(z.string()).optional(),
   comments: z.string().optional(),

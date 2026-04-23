@@ -8,6 +8,7 @@ export type ErrorForm = {
   longitude: number;
   serialNumber: string;
   deveui: string;
+  boxNumber: string;
   types: string[];
   actions: string[];
   comment?: string | null;
