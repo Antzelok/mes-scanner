@@ -2,7 +2,7 @@ import { Metadata } from "next";
 import Charts from "./charts";
 
 export const metadata: Metadata = {
-  title: "Chart",
+  title: "Charts",
 };
 
 const ChartsPage = () => {

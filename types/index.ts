@@ -11,7 +11,7 @@ export type ErrorForm = {
   boxNumber: string;
   types: string[];
   actions: string[];
-  comment?: string | null;
+  comments: string | null;
 };
 
 export type UserSignInForm = {

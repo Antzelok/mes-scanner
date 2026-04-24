@@ -45,7 +45,7 @@ const HistoryTable = () => {
       <div className="md:hidden flex flex-col space-y-4 m-1">
         {records.length === 0 ? (
           <p className="text-center text-gray-400 py-10">
-            Δεν βρεθήκαν αποτελέσματα.
+            Δεν βρέθηκαν αποτελέσματα.
           </p>
         ) : (
           records.map((record) => (
@@ -53,7 +53,8 @@ const HistoryTable = () => {
               key={record.id}
               className="bg-white border-gray-200 rounded-xl p-4 shadow-xl"
             >
-              <div className="flex justify-between items-start py-2 ">
+              {/* Header: Date and Box Number */}
+              <div className="flex justify-between items-start py-2 border-b border-gray-50 mb-3">
                 <div>
                   <div className="text-xs font-bold text-gray-400">ΗΜ/ΝΙΑ</div>
                   <div className="text-sm font-medium">
@@ -68,23 +69,37 @@ const HistoryTable = () => {
                 </div>
                 <div className="text-right">
                   <div className="text-xs font-bold text-gray-400">
+                    ΑΡ. ΥΔ/ΨΙΑΣ
+                  </div>
+                  <div className="text-sm font-bold font-mono">
+                    {record.boxNumber}
+                  </div>
+                </div>
+              </div>
+
+              {/* Device and Location */}
+              <div className="mb-3 grid grid-cols-2 gap-2">
+                <div>
+                  <div className="text-xs font-bold text-gray-400">ΣΥΣΚΕΥΗ</div>
+                  <div className="text-sm font-bold text-gray-900">
+                    {record.serialNumber}
+                  </div>
+                  <div className="text-[10px] text-gray-500 font-mono">
+                    {record.deveui}
+                  </div>
+                </div>
+                <div className="text-right">
+                  <div className="text-xs font-bold text-gray-400">
                     ΤΟΠΟΘΕΣΙΑ
                   </div>
-                  <div className="text-xs font-mono text-blue-600">
-                    {record.latitude.toFixed(4)}, {record.longitude.toFixed(4)}
+                  <div className="text-[12px] font-mono text-blue-600">
+                    {record.latitude.toFixed(4)},<br />
+                    {record.longitude.toFixed(4)}
                   </div>
                 </div>
               </div>
 
-              <div className="mb-3">
-                <div className="text-gray-900 font-bold">
-                  {record.serialNumber}
-                </div>
-                <div className="text-xs text-gray-500 font-mono">
-                  {record.deveui}
-                </div>
-              </div>
-
+              {/* Types and Actions */}
               <div className="grid grid-cols-2 gap-4">
                 <div>
                   <span className="text-[10px] font-bold text-gray-400 ">
@@ -118,13 +133,13 @@ const HistoryTable = () => {
                 </div>
               </div>
 
-              {record.comment && (
-                <div className="mt-3 pt-3">
+              {record.comments && (
+                <div className="mt-3 pt-3 border-t border-gray-50">
                   <span className="text-[10px] font-bold text-gray-400 italic">
                     ΣΧΟΛΙΑ
                   </span>
                   <p className="text-sm text-gray-600 italic leading-tight">
-                    {record.comment}
+                    {record.comments}
                   </p>
                 </div>
               )}
@@ -151,10 +166,10 @@ const HistoryTable = () => {
             {records.length === 0 ? (
               <tr>
                 <td
-                  colSpan={6}
+                  colSpan={7}
                   className="px-6 py-10 text-center text-gray-400"
                 >
-                  Δεν βρεθήκαν αποτελέσματα.
+                  Δεν βρέθηκαν αποτελέσματα.
                 </td>
               </tr>
             ) : (
@@ -178,8 +193,11 @@ const HistoryTable = () => {
                     <div className="text-xs text-gray-400 font-mono">
                       {record.deveui}
                     </div>
-                     <div className="text-xs text-gray-400 font-mono">
-                      {record.boxNumber}
+                  </td>
+                  {/* NEW BOX NUMBER COLUMN */}
+                  <td className="px-4 py-3">
+                    <div className="font-mono text-sm font-bold text-gray-700">
+                      {record.boxNumber || "—"}
                     </div>
                   </td>
                   <td className="px-4 py-3 font-mono text-blue-600 text-xs">
@@ -210,10 +228,10 @@ const HistoryTable = () => {
                     </div>
                   </td>
                   <td
-                    className="px-4 py-3 italic text-gray-600 max-w-[200px] truncate"
-                    title={record.comment || ""}
+                    className="px-4 py-3 italic text-gray-600 max-w-50 truncate"
+                    title={record.comments || ""}
                   >
-                    {record.comment || "—"}
+                    {record.comments || "—"}
                   </td>
                 </tr>
               ))

@@ -39,7 +39,7 @@ const Charts = () => {
         <Loader />
       ) : isError ? (
         <div className="flex h-screen items-center justify-center text-red-500">
-          Error loading data
+          Σφάλμα κατά την ανάκτηση δεδομένων.
         </div>
       ) : (
         <div className="flex items-center justify-center h-screen">
