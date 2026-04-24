@@ -18,6 +18,7 @@ const typeOptions: string[] = [
   "Boot Loop",
   "Motor Error",
   "Low Battery",
+  "Διαρροή",
   "Πόρτα",
   "'Άλλο",
 ];
@@ -25,7 +26,8 @@ const actionOptions: string[] = [
   "Flash Firmware",
   "Callibrate Valve",
   "Αλλαγή Μπαταρίας",
-  "Άνοιγμα Πόρτας",
+  "Επισκευή Διαρροής",
+  "Κλείσιμο Πόρτας",
   "Άλλο",
 ];
 
@@ -174,6 +176,7 @@ const ErrorForm = () => {
           <label className="font-semibold">Αριθμός Υδροληψίας:</label>
           <input
             type="text"
+            placeholder="πχ Α1-142"
             {...register("boxNumber")}
             className="border rounded-xl p-1 w-full"
           />
