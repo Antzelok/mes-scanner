@@ -1,19 +1,30 @@
 import { PrismaClient } from "@prisma/client";
 import { sampleData } from "./sample-data";
+import bcrypt from "bcryptjs"; // or 'bcrypt'
 
 const prisma = new PrismaClient();
 
 async function main() {
   console.log("Start seeding...");
 
-  // 1. Clean the database (Order matters if you have relations!)
-  // Delete child records first, then parents
+  // 1. Clean the database
   await prisma.user.deleteMany();
 
-  // 2. Seed the data
+  // 2. Hash the passwords from sampleData
+  const hashedUsers = await Promise.all(
+    sampleData.users.map(async (user) => {
+      const hashedPassword = await bcrypt.hash(user.password, 10);
+      return {
+        ...user,
+        password: hashedPassword,
+      };
+    })
+  );
+
+  // 3. Seed the data
   const result = await prisma.user.createMany({
-    data: sampleData.users,
-    skipDuplicates: true, // Prevents crashes if IDs overlap
+    data: hashedUsers,
+    skipDuplicates: true,
   });
 
   console.log(`Seeded ${result.count} users successfully!`);
