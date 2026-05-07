@@ -13,7 +13,6 @@ import { defaultFormValues } from "@/lib/constants";
 import { ErrorFormType } from "@/types";
 import BackButton from "@/components/shared/back-button";
 import Loader from "@/components/shared/loader";
-import { UploadButton } from "@/utils/uploadthing";
 import { typeOptions, actionOptions } from "@/types";
 
 const ErrorForm = () => {
@@ -210,22 +209,6 @@ const ErrorForm = () => {
             className="border rounded-xl p-2 w-full h-25"
           />
         </div>
-
-        <main className="flex flex-col items-center justify-between p-24 border rounded-xl">
-          <UploadButton
-            endpoint="imageUploader"
-            className="border rounded-xl"
-            onClientUploadComplete={(res) => {
-              // Do something with the response
-              console.log("Files: ", res);
-              alert("Upload Completed");
-            }}
-            onUploadError={(error: Error) => {
-              // Do something with the error.
-              alert(`ERROR! ${error.message}`);
-            }}
-          />
-        </main>
 
         {/* Submit */}
         <button
