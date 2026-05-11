@@ -11,7 +11,7 @@ export const metadata: Metadata = {
 
 const HomePage = () => {
   return (
-    <main className="flex items-center justify-center h-screen py-12 px-6 ">
+    <main className="flex items-center justify-center py-12 px-6 ">
       <div className="w-200">
         {/* Header */}
         <header className="mb-10">
