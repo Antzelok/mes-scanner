@@ -4,14 +4,14 @@ import { prisma } from "@/db/prisma";
 export async function GET(req: NextRequest) {
   try {
     const { searchParams } = new URL(req.url);
-    const serialNumber: string | null = searchParams.get("serialNumber");
+    const query = searchParams.get("query") || "";
 
     const errors = await prisma.errorRecord.findMany({
       where: {
-        serialNumber: {
-          contains: serialNumber || "",
-          mode: "insensitive",
-        },
+        OR: [
+          { serialNumber: { contains: query, mode: "insensitive" } },
+          { boxNumber: { contains: query, mode: "insensitive" } },
+        ],
       },
       orderBy: { date: "desc" },
       take: 20,

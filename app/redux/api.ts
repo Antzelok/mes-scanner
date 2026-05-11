@@ -5,8 +5,8 @@ export const api = createApi({
   baseQuery: fetchBaseQuery({ baseUrl: "/api" }),
   endpoints: (builder) => ({
     getErrorsHistory: builder.query({
-      query: (serialNumber) =>
-        serialNumber ? `/history?serialNumber=${serialNumber}` : "/history",
+      query: (searchTerm) =>
+        searchTerm ? `/history?query=${searchTerm}` : "/history",
     }),
     ErrorRecord: builder.mutation({
       query: (body) => ({

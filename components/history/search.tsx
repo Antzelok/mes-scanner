@@ -5,7 +5,7 @@ const Search = ({ onSearch }: { onSearch: (val: string) => void }) => {
     <div className="flex items-center w-full p-1.5 md:w-1/3 border rounded-xl shadow-xl md:ml-auto bg-white">
       <input
         type="text"
-        placeholder="Αναζήτηση Serial Number..."
+        placeholder="Αναζήτηση ..."
         onChange={(e) => onSearch(e.target.value)}
         className="flex-1 p-1 px-2 focus:outline-none text-sm"
       />
