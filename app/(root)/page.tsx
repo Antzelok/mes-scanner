@@ -1,9 +1,9 @@
 import { Metadata } from "next";
 import Button from "@/components/errorForm/button";
 import { GiField } from "react-icons/gi";
-import { FaGitlab } from "react-icons/fa";
 import { MdHistory } from "react-icons/md";
 import { IoStatsChartOutline } from "react-icons/io5";
+import { GiRadioactive } from "react-icons/gi";
 
 export const metadata: Metadata = {
   title: "Αρχική",
@@ -25,7 +25,7 @@ const HomePage = () => {
 
         {/* Bento Grid Layout */}
         <div className="grid grid-cols-2 gap-4">
-          {/* Main Large Box (Full Width) */}
+          {/* Main Large Boxex*/}
           <div className="col-span-2">
             <Button
               label="Καταχώρηση Πεδίου"
@@ -36,7 +36,6 @@ const HomePage = () => {
                   <GiField size={40} className="text-white" />
                 </div>
               }
-              // Adjusting the label style via a custom class if your Button component supports it
               labelClassName="text-white text-xl font-bold"
             />
           </div>
@@ -47,10 +46,9 @@ const HomePage = () => {
               className="group relative overflow-hidden w-full h-40 bg-[#3b82f6] rounded-4xl flex flex-col items-center justify-center gap-3 transition-all hover:shadow-2xl hover:shadow-blue-200 active:scale-[0.98]"
               icon={
                 <div className="p-3 bg-white/10 rounded-2xl group-hover:scale-110 transition-transform">
-                  <FaGitlab size={40} className="text-white" />
+                  <GiRadioactive size={40} className="text-white" />
                 </div>
               }
-              // Adjusting the label style via a custom class if your Button component supports it
               labelClassName="text-white text-xl font-bold"
             />
           </div>
