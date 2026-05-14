@@ -43,7 +43,7 @@ react-geolocated
 
 Backend
 Next.js API Routes
-Prisma ORM (PostgreSQL / MySQL / SQLite)
+Prisma ORM (PostgreSQL)
 NextAuth.js (Credentials Strategy)
 Validation
 Zod schema validation

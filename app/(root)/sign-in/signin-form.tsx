@@ -7,6 +7,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { UserSignInFormType } from "@/types";
 import { userSignInSchema } from "@/lib/validators";
 import { defaultUserSignInValues } from "@/lib/constants";
+import toast from "react-hot-toast";
 
 const SignInForm = () => {
   const router = useRouter();
@@ -25,12 +26,12 @@ const SignInForm = () => {
     const res = await signIn("credentials", {
       email: data.email,
       password: data.password,
-      redirect: true,
+      redirect: false,
       callbackUrl: "/",
     });
 
     if (res?.error) {
-      alert("Invalid email or password");
+      toast.error("Λανθασμένο email η κωδικός!");
       return;
     }
 

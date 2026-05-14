@@ -2,7 +2,7 @@ import { Metadata } from "next";
 import HistoryTable from "./history-table";
 
 export const metadata: Metadata = {
-  title: "History Page",
+  title: "Ιστορικό",
 };
 
 const HistoryPage = () => {

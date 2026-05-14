@@ -3,7 +3,6 @@
 import { useEffect } from "react";
 import { useGeolocated } from "react-geolocated";
 import toast from "react-hot-toast";
-import Spinner from "@/components/shared/spinner";
 import QRScanner from "@/components/errorForm/qrscanner";
 import { FiMapPin } from "react-icons/fi";
 import { useErrorRecordMutation } from "@/app/redux/api";
@@ -13,15 +12,8 @@ import { errorFormSchema } from "@/lib/validators";
 import { defaultFormValues } from "@/lib/constants";
 import { ErrorFormType } from "@/types";
 import BackButton from "@/components/shared/back-button";
-
-const typeOptions = ["Boot Loop", "Valve", "Low Battery", "Πόρτα", "'Άλλο"];
-const actionOptions = [
-  "Flash Firmware",
-  "Callibrate Valve",
-  "Αλλαγή Μπαταρίας",
-  "Άνοιγμα Πόρτας",
-  "Άλλο",
-];
+import Loader from "@/components/shared/loader";
+import { typeOptions, actionOptions } from "@/types";
 
 const ErrorForm = () => {
   const [errorRecord, { isLoading }] = useErrorRecordMutation();
@@ -71,7 +63,7 @@ const ErrorForm = () => {
     }
   };
 
-  const currentDate = new Date().toLocaleDateString("el-GR");
+  const currentDate: string = new Date().toLocaleDateString("el-GR");
 
   return (
     <div className="p-6 max-w-4xl mx-auto">
@@ -122,7 +114,7 @@ const ErrorForm = () => {
             onClick={handleLocationClick}
             className="w-30 h-30 flex items-center justify-center"
           >
-            {!coords ? <Spinner /> : <FiMapPin size={40} />}
+            {!coords ? <Loader /> : <FiMapPin size={40} />}
           </button>
         </div>
 
@@ -162,6 +154,19 @@ const ErrorForm = () => {
               }}
             />
           </div>
+        </div>
+
+        <div>
+          <label className="font-semibold">Αριθμός Υδροληψίας:</label>
+          <input
+            type="text"
+            placeholder="πχ Α1-142"
+            {...register("boxNumber")}
+            className="border rounded-xl p-1 w-full"
+          />
+          {errors.boxNumber && (
+            <p className="text-red-600">{errors.boxNumber.message}</p>
+          )}
         </div>
 
         {/* Types */}

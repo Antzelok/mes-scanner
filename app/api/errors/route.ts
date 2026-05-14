@@ -14,6 +14,7 @@ export async function POST(request: Request) {
         longitude: parsed.longitude,
         serialNumber: parsed.serialNumber,
         deveui: parsed.deveui,
+        boxNumber: parsed.boxNumber,
         types: parsed.types ?? [],
         actions: parsed.actions ?? [],
         comments: parsed.comments || "",
