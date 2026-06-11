@@ -20,6 +20,7 @@ model ErrorRecord {
   latitude     Float
   longitude    Float
   serialNumber String
+  boxNumber    String
   deveui       String
   types        String[]
   actions      String[]
@@ -32,5 +33,7 @@ model User {
   password     String  
   role         String    @default("user")
 }
+
+
 
 
