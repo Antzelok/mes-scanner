@@ -1,221 +1,247 @@
 "use client";
 
-import { useEffect } from "react";
-import { useGeolocated } from "react-geolocated";
-import toast from "react-hot-toast";
-import Spinner from "@/components/shared/spinner";
-import QRScanner from "@/components/errorForm/qrscanner";
-import { FiMapPin } from "react-icons/fi";
-import { useErrorRecordMutation } from "@/app/redux/api";
-import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { errorFormSchema } from "@/lib/validators";
-import { defaultFormValues } from "@/lib/constants";
-import { ErrorFormType } from "@/types";
+import { useGetErrorsHistoryQuery } from "@/app/redux/api";
+import { ErrorForm } from "@/types";
 import BackButton from "@/components/shared/back-button";
+import Search from "@/components/history/search";
+import { useState } from "react";
+import Loader from "@/components/shared/loader";
 
-const typeOptions = ["Boot Loop", "Valve", "Low Battery", "Πόρτα", "'Άλλο"];
-const actionOptions = [
-  "Flash Firmware",
-  "Callibrate Valve",
-  "Αλλαγή Μπαταρίας",
-  "Άνοιγμα Πόρτας",
-  "Άλλο",
-];
+const HistoryTable = () => {
+  const [searchTerm, setSearchTerm] = useState("");
+  const { data, isLoading, isError } = useGetErrorsHistoryQuery(searchTerm);
+  const records: ErrorForm[] = data?.data || [];
 
-const ErrorForm = () => {
-  const [errorRecord, { isLoading }] = useErrorRecordMutation();
+  if (isLoading) {
+    return (
+      <div className="flex flex-col justify-center items-center p-20">
+        <Loader />
+        <span className="ml-2 mt-4 text-gray-500 animate-pulse">
+          Φόρτωση δεδομένων...
+        </span>
+      </div>
+    );
+  }
 
-  const { coords, isGeolocationAvailable, isGeolocationEnabled } =
-    useGeolocated({
-      positionOptions: { enableHighAccuracy: false },
-      userDecisionTimeout: 5000,
-    });
-
-  const {
-    register,
-    handleSubmit,
-    setValue,
-    reset,
-    formState: { errors },
-  } = useForm<ErrorFormType>({
-    resolver: zodResolver(errorFormSchema),
-    defaultValues: defaultFormValues,
-  });
-
-  useEffect(() => {
-    if (!isGeolocationAvailable)
-      toast.error("Το browser δεν υποστηρίζει τοποθεσία.");
-    if (!isGeolocationEnabled)
-      toast.error("Η τοποθεσία είναι απενεργοποιημένη στη συσκευή.");
-  }, [isGeolocationAvailable, isGeolocationEnabled]);
-
-  const handleLocationClick = () => {
-    if (!coords) {
-      toast.error("Η τοποθεσία δεν είναι ακόμα έτοιμη...");
-      return;
-    }
-    setValue("latitude", coords.latitude);
-    setValue("longitude", coords.longitude);
-    toast.success("Η τοποθεσία ενημερώθηκε!");
-  };
-
-  const onSubmit = async (data: ErrorFormType) => {
-    try {
-      await errorRecord(data).unwrap();
-      toast.success("Η βλάβη καταχωρήθηκε!");
-      reset(defaultFormValues);
-    } catch (error) {
-      toast.error("Σφάλμα κατά την καταχώρηση");
-      console.error(error);
-    }
-  };
-
-  const currentDate = new Date().toLocaleDateString("el-GR");
+  if (isError) {
+    return (
+      <div className="m-4 bg-red-50 text-red-700 p-10 rounded-lg flex flex-col items-center border border-red-200">
+        <span className="font-bold">Κάτι πήγε στραβά!</span>
+        <span className="text-sm">
+          Σφάλμα κατά την ανάκτηση δεδομένων. Παρακαλώ δοκιμάστε ξανά.
+        </span>
+      </div>
+    );
+  }
 
   return (
-    <div className="p-6 max-w-4xl mx-auto">
-      <BackButton />
-      <h1 className="text-2xl font-bold mb-6 text-center">Καταχώρηση</h1>
+    <div className="w-full p-2 md:p-5">
+      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-6">
+        <BackButton />
+        <Search onSearch={setSearchTerm} />
+      </div>
 
-      <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
-        {/* DATE */}
-        <div>
-          <label className="font-semibold">Ημερομηνία:</label>
-          <input
-            value={currentDate}
-            readOnly
-            className="border rounded-xl p-2 w-full"
-          />
-        </div>
+      {/* MOBILE VIEW */}
+      <div className="md:hidden flex flex-col space-y-4 m-1">
+        {records.length === 0 ? (
+          <p className="text-center text-gray-400 py-10">
+            Δεν βρέθηκαν αποτελέσματα.
+          </p>
+        ) : (
+          records.map((record) => (
+            <div
+              key={record.id}
+              className="bg-white border-gray-200 rounded-xl p-4 shadow-xl"
+            >
+              {/* Header: Date and Box Number */}
+              <div className="flex justify-between items-start py-2 border-b border-gray-50 mb-3">
+                <div>
+                  <div className="text-xs font-bold text-gray-400">ΗΜ/ΝΙΑ</div>
+                  <div className="text-sm font-medium">
+                    {new Date(record.date).toLocaleDateString()}
+                    <span className="ml-2 text-gray-400 font-normal">
+                      {new Date(record.date).toLocaleTimeString([], {
+                        hour: "2-digit",
+                        minute: "2-digit",
+                      })}
+                    </span>
+                  </div>
+                </div>
+                <div className="text-right">
+                  <div className="text-xs font-bold text-gray-400">
+                    ΑΡ. ΥΔ/ΨΙΑΣ
+                  </div>
+                  <div className="text-sm font-bold font-mono">
+                    {record.boxNumber}
+                  </div>
+                </div>
+              </div>
 
-        {/* LAT-LONG */}
-        <div className="flex gap-4 items-end mt-4">
-          <div className="flex flex-col flex-1 gap-3">
-            <div>
-              <label className="font-semibold">Latitude:</label>
-              <input
-                type="text"
-                {...register("latitude", { valueAsNumber: true })}
-                className="border rounded-xl p-2 w-full"
-              />
-              {errors.latitude && (
-                <p className="text-red-600">{errors.latitude.message}</p>
+              {/* Device and Location */}
+              <div className="mb-3 grid grid-cols-2 gap-2">
+                <div>
+                  <div className="text-xs font-bold text-gray-400">ΣΥΣΚΕΥΗ</div>
+                  <div className="text-sm font-bold text-gray-900">
+                    {record.serialNumber}
+                  </div>
+                  <div className="text-[10px] text-gray-500 font-mono">
+                    {record.deveui}
+                  </div>
+                </div>
+                <div className="text-right">
+                  <div className="text-xs font-bold text-gray-400">
+                    ΤΟΠΟΘΕΣΙΑ
+                  </div>
+                  <div className="text-[12px] font-mono text-blue-600">
+                    {record.latitude.toFixed(4)},<br />
+                    {record.longitude.toFixed(4)}
+                  </div>
+                </div>
+              </div>
+
+              {/* Types and Actions */}
+              <div className="grid grid-cols-2 gap-4">
+                <div>
+                  <span className="text-[10px] font-bold text-gray-400 ">
+                    ΒΛΑΒΗ
+                  </span>
+                  <div className="flex flex-wrap gap-1 mt-1">
+                    {record.types.map((type, i) => (
+                      <span
+                        key={i}
+                        className="bg-red-100 text-red-700 text-[9px] px-2 py-0.5 rounded-xl font-bold border border-red-200"
+                      >
+                        {type}
+                      </span>
+                    ))}
+                  </div>
+                </div>
+                <div>
+                  <span className="text-[10px] font-bold text-gray-400">
+                    ΕΝΕΡΓΕΙΕΣ
+                  </span>
+                  <div className="flex flex-wrap gap-1 mt-1">
+                    {record.actions.map((action, i) => (
+                      <span
+                        key={i}
+                        className="bg-green-100 text-green-700 text-[9px] px-2 py-0.5 rounded-xl font-bold border border-green-200"
+                      >
+                        {action}
+                      </span>
+                    ))}
+                  </div>
+                </div>
+              </div>
+
+              {record.comments && (
+                <div className="mt-3 pt-3 border-t border-gray-50">
+                  <span className="text-[10px] font-bold text-gray-400 italic">
+                    ΣΧΟΛΙΑ
+                  </span>
+                  <p className="text-sm text-gray-600 italic leading-tight">
+                    {record.comments}
+                  </p>
+                </div>
               )}
             </div>
+          ))
+        )}
+      </div>
 
-            <div>
-              <label className="font-semibold">Longitude:</label>
-              <input
-                type="text"
-                {...register("longitude", { valueAsNumber: true })}
-                className="border rounded-xl p-2 w-full"
-              />
-              {errors.longitude && (
-                <p className="text-red-600">{errors.longitude.message}</p>
-              )}
-            </div>
-          </div>
-
-          <button
-            type="button"
-            onClick={handleLocationClick}
-            className="w-30 h-30 flex items-center justify-center"
-          >
-            {!coords ? <Spinner /> : <FiMapPin size={40} />}
-          </button>
-        </div>
-
-        {/* QR Scanner */}
-        <div className="flex gap-6 items-start">
-          <div className="flex-1 space-y-4">
-            <div>
-              <label className="font-semibold">Serial Number:</label>
-              <input
-                type="text"
-                {...register("serialNumber")}
-                className="border rounded-xl p-1 w-full"
-              />
-              {errors.serialNumber && (
-                <p className="text-red-600">{errors.serialNumber.message}</p>
-              )}
-            </div>
-
-            <div>
-              <label className="font-semibold">Deveui:</label>
-              <input
-                type="text"
-                {...register("deveui")}
-                className="border rounded-xl p-1 w-full"
-              />
-              {errors.deveui && (
-                <p className="text-red-600">{errors.deveui.message}</p>
-              )}
-            </div>
-          </div>
-
-          <div className="w-30 h-30">
-            <QRScanner
-              onScan={(sn: string, de: string) => {
-                setValue("serialNumber", sn);
-                setValue("deveui", de);
-              }}
-            />
-          </div>
-        </div>
-
-        {/* Types */}
-        <div>
-          <label className="font-semibold">Είδος Βλάβης:</label>
-          <div className="flex flex-col mt-1">
-            {typeOptions.map((t) => (
-              <label key={t} className="flex items-center gap-2">
-                <input type="checkbox" value={t} {...register("types")} />
-                {t}
-              </label>
-            ))}
-          </div>
-          {errors.types && (
-            <p className="text-red-600">{errors.types.message}</p>
-          )}
-        </div>
-
-        {/* Actions */}
-        <div>
-          <label className="font-semibold">Ενέργειες:</label>
-          <div className="flex flex-col mt-1">
-            {actionOptions.map((a) => (
-              <label key={a} className="flex items-center gap-2">
-                <input type="checkbox" value={a} {...register("actions")} />
-                {a}
-              </label>
-            ))}
-          </div>
-          {errors.actions && (
-            <p className="text-red-600">{errors.actions.message}</p>
-          )}
-        </div>
-
-        {/* Comment */}
-        <div>
-          <label className="font-semibold">Άλλο σχόλιο:</label>
-          <textarea
-            {...register("comments")}
-            className="border rounded-xl p-2 w-full h-25"
-          />
-        </div>
-
-        {/* Submit */}
-        <button
-          type="submit"
-          disabled={isLoading}
-          className="bg-blue-500 hover:bg-blue-600 text-white px-6 py-2 rounded-xl w-full"
-        >
-          Καταχώρηση
-        </button>
-      </form>
+      {/* DESKTOP VIEW */}
+      <div className="hidden md:block overflow-x-auto shadow-md rounded-lg border border-gray-200">
+        <table className="w-full text-sm text-left text-gray-500">
+          <thead className="text-xs text-gray-700 uppercase bg-gray-50 border-b">
+            <tr>
+              <th className="px-4 py-3">ΗΜ/ΝΙΑ</th>
+              <th className="px-4 py-3">ΣΥΣΚΕΥΗ (S/N & DevEUI)</th>
+              <th className="px-4 py-3">ΑΡΙΘΜΟΣ ΥΔ/ΨΙΑΣ</th>
+              <th className="px-4 py-3">ΤΟΠΟΘΕΣΙΑ</th>
+              <th className="px-4 py-3">ΒΛΑΒΗ</th>
+              <th className="px-4 py-3">ΕΝΕΡΓΕΙΕΣ</th>
+              <th className="px-4 py-3">ΣΧΟΛΙΑ</th>
+            </tr>
+          </thead>
+          <tbody>
+            {records.length === 0 ? (
+              <tr>
+                <td
+                  colSpan={7}
+                  className="px-6 py-10 text-center text-gray-400"
+                >
+                  Δεν βρέθηκαν αποτελέσματα.
+                </td>
+              </tr>
+            ) : (
+              records.map((record) => (
+                <tr
+                  key={record.id}
+                  className="bg-white border-b hover:bg-gray-50 transition-colors"
+                >
+                  <td className="px-4 py-3 whitespace-nowrap">
+                    <div className="font-medium text-gray-700">
+                      {new Date(record.date).toLocaleDateString()}
+                    </div>
+                    <div className="text-xs text-gray-400">
+                      {new Date(record.date).toLocaleTimeString()}
+                    </div>
+                  </td>
+                  <td className="px-4 py-3">
+                    <div className="font-bold text-gray-900">
+                      {record.serialNumber}
+                    </div>
+                    <div className="text-xs text-gray-400 font-mono">
+                      {record.deveui}
+                    </div>
+                  </td>
+                  {/* NEW BOX NUMBER COLUMN */}
+                  <td className="px-4 py-3">
+                    <div className="font-mono text-sm font-bold text-gray-700">
+                      {record.boxNumber || "—"}
+                    </div>
+                  </td>
+                  <td className="px-4 py-3 font-mono text-blue-600 text-xs">
+                    {record.latitude.toFixed(4)}, {record.longitude.toFixed(4)}
+                  </td>
+                  <td className="px-4 py-3">
+                    <div className="flex flex-wrap gap-1">
+                      {record.types.map((type, i) => (
+                        <span
+                          key={i}
+                          className="bg-red-100 text-red-800 text-[10px] px-2 py-0.5 rounded uppercase font-bold border border-red-200"
+                        >
+                          {type}
+                        </span>
+                      ))}
+                    </div>
+                  </td>
+                  <td className="px-4 py-3">
+                    <div className="flex flex-wrap gap-1">
+                      {record.actions.map((action, i) => (
+                        <span
+                          key={i}
+                          className="bg-green-100 text-green-800 text-[10px] px-2 py-0.5 rounded uppercase font-bold border border-green-200"
+                        >
+                          {action}
+                        </span>
+                      ))}
+                    </div>
+                  </td>
+                  <td
+                    className="px-4 py-3 italic text-gray-600 max-w-50 truncate"
+                    title={record.comments || ""}
+                  >
+                    {record.comments || "—"}
+                  </td>
+                </tr>
+              ))
+            )}
+          </tbody>
+        </table>
+      </div>
     </div>
   );
 };
 
-export default ErrorForm;
+export default HistoryTable;
+
